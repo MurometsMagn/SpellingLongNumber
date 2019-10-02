@@ -54,34 +54,14 @@ public class Main {
         }
 
 
-        Map<Integer, String> spellingMap = new HashMap<>();
-        spellingMap.put(1, "one ");
-        spellingMap.put(2, "two ");
-        spellingMap.put(3, "three ");
-        spellingMap.put(4, "four ");
-        spellingMap.put(5, "five ");
-        spellingMap.put(6, "six ");
-        spellingMap.put(7, "seven ");
-        spellingMap.put(8, "eight ");
-        spellingMap.put(9, "nine ");
-        spellingMap.put(10, "ten ");
-        spellingMap.put(11, "eleven ");
-        spellingMap.put(12, "twelve ");
-        spellingMap.put(13, "thirteen ");
-        spellingMap.put(14, "fourteen ");
-        spellingMap.put(15, "fifteen ");
-        spellingMap.put(16, "sixteen ");
-        spellingMap.put(17, "seventeen ");
-        spellingMap.put(18, "eighteen ");
-        spellingMap.put(19, "nineteen ");
-        spellingMap.put(20, "twenty ");
-        spellingMap.put(30, "thirty ");
-        spellingMap.put(40, "forty ");
-        spellingMap.put(50, "fifty ");
-        spellingMap.put(60, "sixty ");
-        spellingMap.put(70, "seventy ");
-        spellingMap.put(80, "eighty ");
-        spellingMap.put(90, "ninety ");
+        //почему не получились константы?
+        final String spellingOnesList[] = new String[]{"", "one ", "two ", "three ", "four ", "five ", "six ", "seven ",
+                "eight ", "nine ", "ten ", "eleven ", "twelve ", "thirteen ", "fourteen ", "fifteen ", "sixteen ",
+                "seventeen ", "eighteen ", "nineteen "};
+        final String spellingTensList[] = new String[]{"", "", "twenty ", "thirty ", "forty ", "fifty ", "sixty ",
+                "seventy ", "eighty ", "ninety "};
+        final String spellingThousansList[] = new String[]{"", "", "thousand and ", "million and ", "billion and ",
+                "trillion and ", "quadrillion and "};
 
 
         //создать переменную "количество троек, в т.ч. неполных", неполные наполнить нолями (максимум две)
@@ -99,21 +79,30 @@ public class Main {
             int hundreds = digits.get(i * 3 - 1);
 
             if (hundreds != 0) {
-                outputData = outputData.concat(spellingMap.get(hundreds) + "hundred ");
+                outputData = outputData.concat(spellingOnesList[hundreds] + "hundred ");
             }
             if ((tens == 0 && ones != 0) || tens == 1) {
-                outputData = outputData.concat(spellingMap.get(tens * 10 + ones));
+                outputData = outputData.concat(spellingOnesList[tens * 10 + ones]);
             } else if (tens >= 2 && tens <= 9) {
-                outputData = outputData.concat(spellingMap.get(tens * 10) + spellingMap.get(ones));
+                outputData = outputData.concat(spellingTensList[tens] + spellingOnesList[ones]);
             }
 
-            //триллион, квадриллион, квинтиллион, секстиллион, септиллион, октиллион, нониллион и дециллион
-            if (i == 6) outputData += "quadrillion ";
-            else if (i == 5) outputData += "trillion ";
-            else if (i == 4) outputData += "billion ";
-            else if (i == 3) outputData += "million ";
-            else if (i == 2) outputData += "thousand ";
+            if (ones != 0 || tens != 0 || hundreds != 0) {
+                outputData = outputData.concat(spellingThousansList[i]);
+            }
         }
+
+        outputData = outputData.trim();
+        String[] words = outputData.split(" ");
+        String lastWord = words[words.length - 1];
+        if (lastWord.equals("and")) {
+            words[words.length - 1] = "";
+            outputData = "";
+            for (String word : words) {
+                outputData = outputData.concat(word + " ");
+            }
+        }
+
         System.out.println(outputData);
     }
 }
